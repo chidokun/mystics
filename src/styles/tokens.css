@@ -1,0 +1,78 @@
+/*
+ * Nền trắng trong, điểm nhấn lấy từ bảng màu dân gian Việt (tranh Đông Hồ, sơn mài hiện đại):
+ * đỏ son, xanh chàm, xanh ngọc (lục), vàng hòe.
+ *
+ * Mỗi công cụ có một màu nhấn riêng (khai báo `accent` trong ToolDefinition) và được gán
+ * vào biến --accent. Các biến dẫn xuất (--accent-soft, --accent-line…) được tính lại ở mọi
+ * phần tử có class "has-accent".
+ */
+:root {
+  /* Bảng màu gốc */
+  --son: #c8372d;
+  --cham: #2c4a8f;
+  --luc: #1d7a62;
+  --hoe: #e8a317;
+  --tim: #6b4c9a;
+  --muc: #23272e;
+  --lam: #136f8f;
+
+  /* Nền và bề mặt */
+  --bg: #f6f7f4;
+  --surface: #ffffff;
+  --sunken: #eceee9;
+  --field: #ffffff;
+  --line: #dcdfd9;
+
+  /* Chữ */
+  --text: #1c2024;
+  --text-dim: #464c54;
+  --text-faint: #666d76;
+
+  /* Ý nghĩa */
+  --positive: var(--luc);
+  --negative: var(--son);
+  --on-accent: #ffffff;
+
+  /* Màu nhấn mặc định của trang (khung chung, trang chủ) */
+  --accent: var(--cham);
+
+  /* Lá bài */
+  --ink: #1c2024;
+  --card-face: #ffffff;
+  --card-back: radial-gradient(ellipse at 50% 38%, #3a5ca8 0%, #26407f 55%, #192c5c 100%);
+  --card-back-line: #e3e9f7;
+  --shadow-card: 0 1px 2px rgba(20, 30, 50, 0.1), 0 8px 22px rgba(20, 30, 50, 0.13);
+
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: 2rem;
+  --step-4: 2.75rem;
+  --step-5: clamp(2.75rem, 6vw, 4.5rem);
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+
+  --gutter: 20px;
+  --max-width: 1160px;
+
+  color-scheme: light;
+}
+
+:root,
+.has-accent {
+  --accent-deep: color-mix(in srgb, var(--accent) 80%, black);
+  --accent-soft: color-mix(in srgb, var(--accent) 7%, white);
+  --accent-line: color-mix(in srgb, var(--accent) 40%, white);
+  --accent-faint: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+@media (max-width: 600px) {
+  :root {
+    --gutter: 16px;
+  }
+}

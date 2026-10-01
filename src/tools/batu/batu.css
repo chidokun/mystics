@@ -1,0 +1,902 @@
+/* Màu ngũ hành dùng chung trong công cụ */
+.bt-page,
+.bt-lookup {
+  --el-moc: #1d7a62;
+  --el-hoa: #c8372d;
+  --el-tho: #9a6610;
+  --el-kim: #5f6b78;
+  --el-thuy: #2c4a8f;
+}
+
+.bt-el--moc {
+  color: var(--el-moc);
+}
+.bt-el--hoa {
+  color: var(--el-hoa);
+}
+.bt-el--tho {
+  color: var(--el-tho);
+}
+.bt-el--kim {
+  color: var(--el-kim);
+}
+.bt-el--thuy {
+  color: var(--el-thuy);
+}
+
+.bt-el {
+  font-weight: 500;
+}
+
+.bt-sub {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.bt-hint {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--text-faint);
+  max-width: 60ch;
+}
+
+.bt-strong {
+  font-weight: 600;
+}
+
+/* =========================================================
+   Biểu mẫu
+   ========================================================= */
+
+.bt-page {
+  padding: 32px 0 72px;
+}
+
+.bt-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 40px;
+  max-width: 860px;
+}
+
+.bt-form > div:last-child,
+.bt-error {
+  grid-column: 1 / -1;
+}
+
+.bt-fieldset {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.bt-fieldset > legend {
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.bt-date {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 8px;
+}
+
+.bt-time {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  max-width: 220px;
+}
+
+.bt-time .input:disabled {
+  opacity: 0.5;
+}
+
+.bt-check {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  cursor: pointer;
+}
+
+.bt-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.bt-check .bt-hint {
+  flex-basis: 100%;
+}
+
+.bt-empty {
+  max-width: 56ch;
+  margin-top: 40px;
+}
+
+@media (max-width: 720px) {
+  .bt-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Lá số
+   ========================================================= */
+
+.bt-result {
+  display: grid;
+  gap: 56px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 16px;
+}
+
+.bt-result-head {
+  display: grid;
+  gap: 6px;
+  max-width: 70ch;
+  margin-bottom: -24px;
+}
+
+.bt-result-for {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+
+.bt-result-for strong {
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.bt-warning {
+  max-width: 70ch;
+  margin-bottom: -24px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--hoe);
+  background: color-mix(in srgb, var(--hoe) 10%, white);
+}
+
+.bt-section {
+  display: grid;
+  gap: 16px;
+}
+
+.bt-section > h2 {
+  font-size: var(--step-3);
+}
+
+.bt-section h3 {
+  margin-top: 8px;
+  font-size: var(--step-1);
+}
+
+.bt-section-intro {
+  max-width: 68ch;
+  margin-top: -6px;
+  color: var(--text-dim);
+}
+
+.bt-label {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.bt-lead {
+  max-width: 62ch;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+.bt-list {
+  margin: 0;
+}
+
+.bt-list > div {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.bt-list dt {
+  font-weight: 500;
+}
+
+.bt-list dd {
+  margin: 0;
+  max-width: 62ch;
+}
+
+/* Bảng tứ trụ */
+.bt-pillars-scroll {
+  overflow-x: auto;
+}
+
+.bt-pillars {
+  width: 100%;
+  min-width: 520px;
+  max-width: 860px;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.bt-pillars th,
+.bt-pillars td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.bt-pillars thead th {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.bt-pillars tbody th {
+  width: 7.5rem;
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--text-faint);
+  text-align: left;
+}
+
+.bt-pillars thead th:first-child {
+  width: 7.5rem;
+}
+
+.bt-pillars .is-day {
+  background: var(--accent-soft);
+}
+
+.bt-pillars thead .is-day {
+  color: var(--accent);
+  border-radius: var(--radius-m) var(--radius-m) 0 0;
+}
+
+.bt-pillars .is-missing {
+  color: var(--text-faint);
+  font-size: var(--step--1);
+  background: repeating-linear-gradient(135deg, transparent 0 6px, var(--sunken) 6px 7px);
+}
+
+.bt-big {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.bt-row-char td {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.bt-hidden {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+.bt-hidden li:not(.is-main) {
+  opacity: 0.7;
+  font-size: var(--step--1);
+}
+
+.bt-hidden-god {
+  margin-left: 6px;
+  color: var(--text-faint);
+}
+
+/* Nhật chủ */
+.bt-daymaster {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 16px 40px;
+}
+
+.bt-dm-char {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 16vw, 8.5rem);
+  font-weight: 400;
+  line-height: 0.9;
+  font-variation-settings: 'opsz' 144;
+}
+
+.bt-daymaster h2 {
+  margin: 2px 0 12px;
+  font-size: var(--step-3);
+}
+
+.bt-daymaster .bt-lead {
+  margin-bottom: 8px;
+}
+
+/* Ngũ hành */
+.bt-el-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px 48px;
+}
+
+.bt-bars {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bt-bar {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 3.5rem;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.bt-bar-name {
+  font-weight: 500;
+}
+
+.bt-bar-self {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.bt-bar-track {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--sunken);
+  overflow: hidden;
+}
+
+.bt-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 6px;
+}
+
+.bt-bar--moc .bt-bar-fill {
+  background: var(--el-moc);
+}
+.bt-bar--hoa .bt-bar-fill {
+  background: var(--el-hoa);
+}
+.bt-bar--tho .bt-bar-fill {
+  background: var(--el-tho);
+}
+.bt-bar--kim .bt-bar-fill {
+  background: var(--el-kim);
+}
+.bt-bar--thuy .bt-bar-fill {
+  background: var(--el-thuy);
+}
+
+.bt-bar-value {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--text-dim);
+}
+
+.bt-bar-tag {
+  grid-column: 2 / -1;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.bt-bar-tag:empty {
+  display: none;
+}
+
+.bt-bar-tag.is-good {
+  color: var(--positive);
+}
+
+.bt-bar-tag.is-bad {
+  color: var(--negative);
+}
+
+.bt-strength {
+  display: grid;
+  gap: 10px;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+}
+
+.bt-strength-label {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  color: var(--accent);
+}
+
+.bt-favor {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bt-favor-item {
+  display: grid;
+  gap: 10px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-top: 3px solid currentColor;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+}
+
+.bt-favor-item--moc {
+  color: var(--el-moc);
+}
+.bt-favor-item--hoa {
+  color: var(--el-hoa);
+}
+.bt-favor-item--tho {
+  color: var(--el-tho);
+}
+.bt-favor-item--kim {
+  color: var(--el-kim);
+}
+.bt-favor-item--thuy {
+  color: var(--el-thuy);
+}
+
+.bt-favor-name {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+
+.bt-favor-item dl {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  color: var(--text);
+}
+
+.bt-favor-item dt {
+  font-size: var(--step--1);
+  color: var(--text-faint);
+}
+
+.bt-favor-item dd {
+  margin: 0;
+}
+
+/* Thập thần */
+.bt-gods {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 70ch;
+}
+
+.bt-gods li {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.bt-god-name {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Hợp xung */
+.bt-relations {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 72ch;
+}
+
+.bt-relations li {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.bt-rel-kind {
+  justify-self: start;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--on-accent);
+  background: var(--positive);
+}
+
+.bt-relations li[data-kind='xung'] .bt-rel-kind {
+  background: var(--negative);
+}
+
+.bt-relations li[data-kind='tam hợp'] .bt-rel-kind,
+.bt-relations li[data-kind='can hợp'] .bt-rel-kind {
+  background: var(--accent);
+}
+
+/* Đại vận */
+.bt-luck {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bt-luck li {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 12px 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  text-align: center;
+}
+
+.bt-luck li.is-now {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.bt-luck-age {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.bt-luck-chars {
+  display: grid;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.15;
+}
+
+.bt-luck-god {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.bt-luck-year {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.bt-luck-now {
+  max-width: 70ch;
+}
+
+.bt-ganzhi {
+  font-weight: 500;
+}
+
+.bt-annual {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 76ch;
+}
+
+.bt-annual li {
+  display: grid;
+  grid-template-columns: 3.5rem 7rem 7.5rem 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.bt-annual li.is-now .bt-annual-year {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.bt-annual-year {
+  font-variant-numeric: tabular-nums;
+}
+
+.bt-annual-god {
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.bt-annual-text {
+  color: var(--text-dim);
+  font-size: 0.9375rem;
+}
+
+.bt-disclaimer {
+  max-width: 70ch;
+  font-size: var(--step--1);
+}
+
+@media (max-width: 760px) {
+  .bt-daymaster,
+  .bt-el-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .bt-luck {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .bt-list > div,
+  .bt-gods li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .bt-annual li {
+    grid-template-columns: 3.5rem 1fr;
+  }
+
+  .bt-annual-god,
+  .bt-annual-text {
+    grid-column: 2;
+  }
+}
+
+/* =========================================================
+   Tra cứu
+   ========================================================= */
+
+.bt-lookup {
+  display: grid;
+  gap: 28px;
+  padding: 28px 0 72px;
+}
+
+.bt-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bt-subnav .chip {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.bt-subnav .chip[aria-current='page'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+}
+
+.bt-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bt-cards > li {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 22px;
+}
+
+.bt-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.bt-card-char {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.bt-mini {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.bt-mini dt {
+  font-size: var(--step--1);
+  color: var(--text-faint);
+}
+
+.bt-mini dd {
+  margin: 0;
+}
+
+.bt-table-scroll {
+  overflow-x: auto;
+}
+
+.bt-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+.bt-table th,
+.bt-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.bt-table thead th {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.bt-table tbody th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bt-note {
+  margin-top: 10px;
+  font-size: var(--step--1);
+}
+
+.bt-element-view {
+  display: grid;
+  gap: 32px;
+}
+
+.bt-cycle {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) 1fr;
+  align-items: center;
+  gap: 24px 40px;
+  margin: 0;
+}
+
+.bt-cycle svg {
+  width: 100%;
+}
+
+.bt-cycle figcaption {
+  max-width: 52ch;
+  line-height: 1.9;
+}
+
+.bt-cycle-sinh {
+  stroke: var(--text-dim);
+  stroke-width: 1.6;
+}
+
+.bt-cycle-khac {
+  stroke: var(--negative);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 4;
+}
+
+.bt-cycle-head-sinh {
+  fill: var(--text-dim);
+}
+
+.bt-cycle-head-khac {
+  fill: var(--negative);
+}
+
+.bt-cycle-node {
+  fill: var(--surface);
+  stroke-width: 2;
+}
+
+.bt-cycle-node--moc {
+  stroke: var(--el-moc);
+}
+.bt-cycle-node--hoa {
+  stroke: var(--el-hoa);
+}
+.bt-cycle-node--tho {
+  stroke: var(--el-tho);
+}
+.bt-cycle-node--kim {
+  stroke: var(--el-kim);
+}
+.bt-cycle-node--thuy {
+  stroke: var(--el-thuy);
+}
+
+.bt-cycle-label {
+  font-family: var(--font-display);
+  font-size: 15px;
+  fill: var(--text);
+}
+
+.bt-legend {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.bt-legend--sinh {
+  border: 1px solid var(--text-dim);
+}
+
+.bt-legend--khac {
+  border: 1px dashed var(--negative);
+  color: var(--negative);
+}
+
+.bt-god-list {
+  display: grid;
+  margin: 0;
+  max-width: 820px;
+}
+
+.bt-god-list > div {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.bt-god-list dt {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.bt-god-list dd {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  max-width: 62ch;
+}
+
+@media (max-width: 720px) {
+  .bt-cycle,
+  .bt-god-list > div {
+    grid-template-columns: 1fr;
+  }
+}

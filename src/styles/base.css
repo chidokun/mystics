@@ -1,0 +1,327 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  /* Ánh vàng lá và son phớt trên nền vỏ trứng rạn */
+  background-image:
+    radial-gradient(ellipse 60% 40% at 100% -10%, rgba(44, 74, 143, 0.08), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 0% 0%, rgba(29, 122, 98, 0.06), transparent 70%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0;
+  font-variation-settings: 'opsz' 96;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent-deep);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.prose {
+  max-width: 68ch;
+}
+
+.muted {
+  color: var(--text-dim);
+}
+
+/* ---------- Nút ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  color: var(--on-accent);
+}
+
+.btn-ghost {
+  background: var(--surface);
+  color: var(--accent);
+  border-color: var(--line);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent-line);
+  color: var(--accent-deep);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Khung sơn mài: viền vàng kép ---------- */
+
+.frame {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--accent-faint);
+  border-radius: calc(var(--radius-m) - 3px);
+  pointer-events: none;
+}
+
+/* ---------- Form ---------- */
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: var(--step--1);
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  background: var(--field);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  color: var(--text);
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+}
+
+.input:focus {
+  border-color: var(--accent-line);
+  outline: none;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+textarea.input {
+  resize: vertical;
+  min-height: 84px;
+}
+
+.field-error {
+  color: var(--negative);
+  font-size: var(--step--1);
+}
+
+/* ---------- Chip chọn ---------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 38px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+
+.chip:hover {
+  color: var(--text);
+  border-color: var(--accent-line);
+}
+
+.chip[aria-pressed='true'],
+.chip[aria-checked='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+}
+
+/* ---------- Thanh tab của mỗi công cụ ---------- */
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab {
+  flex: none;
+  padding: 12px 16px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-weight: 500;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab[aria-current='page'] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- Hộp thoại ---------- */
+
+.dialog {
+  box-shadow: 0 24px 60px rgba(20, 26, 35, 0.25);
+  width: min(720px, calc(100vw - 24px));
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  color: var(--text);
+  overflow: auto;
+}
+
+.dialog::backdrop {
+  background: rgba(20, 26, 35, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-close {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--surface);
+  border: none;
+  border-radius: 0 0 0 var(--radius-m);
+  color: var(--text-dim);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.dialog-close:hover {
+  color: var(--text);
+}
+
+.dialog-body {
+  padding: 0 28px 28px;
+  margin-top: -20px;
+}
+
+@media (max-width: 600px) {
+  .dialog-body {
+    padding: 0 18px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

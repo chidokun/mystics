@@ -1,0 +1,872 @@
+/* =========================================================
+   Lá bài Tarot
+   ========================================================= */
+
+.tr-card {
+  --w: 110px;
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: var(--w);
+  aspect-ratio: 7 / 12;
+  font-size: calc(var(--w) / 10);
+  perspective: 900px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+}
+
+.tr-card--lg {
+  --w: 170px;
+}
+
+.tr-card.is-interactive {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tr-card.is-interactive:hover {
+  transform: translateY(-4px);
+}
+
+.tr-card:focus-visible {
+  outline: none;
+}
+
+.tr-card:focus-visible .tr-card-inner {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: calc(var(--w) / 14);
+}
+
+.tr-card-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.3, 0.7, 0.25, 1);
+}
+
+.tr-card-inner[data-face-up='true'] {
+  transform: rotateY(180deg);
+}
+
+.tr-card-back,
+.tr-card-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: calc(var(--w) / 14);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.tr-card-back {
+  display: block;
+  color: #efe8fa;
+  background: radial-gradient(ellipse at 50% 40%, #8463ba 0%, #5b3f8f 55%, #3b2763 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(239, 232, 250, 0.35),
+    var(--shadow-card);
+}
+
+.tr-back-art {
+  width: 100%;
+  height: 100%;
+}
+
+.tr-back-spark {
+  fill: var(--hoe);
+}
+
+.tr-card-face {
+  transform: rotateY(180deg);
+  background-color: var(--card-face);
+  background-image: radial-gradient(ellipse at 50% 45%, transparent 60%, rgba(70, 40, 110, 0.07) 100%);
+  color: var(--ink);
+  box-shadow:
+    inset 0 0 0 1px rgba(28, 32, 36, 0.12),
+    var(--shadow-card);
+}
+
+.tr-face-inner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  padding: 0.7em 0.5em 0.65em;
+}
+
+.tr-face-inner.is-reversed {
+  transform: rotate(180deg);
+}
+
+.tr-face-top {
+  display: grid;
+  justify-items: center;
+  line-height: 1.1;
+}
+
+.tr-face-numeral {
+  font-family: var(--font-display);
+  font-size: 1.35em;
+  font-weight: 500;
+  color: var(--tim);
+}
+
+.tr-face-suit {
+  font-size: max(0.8em, 8px);
+  color: var(--text-faint);
+}
+
+.tr-face-glyph {
+  align-self: center;
+  width: 94%;
+}
+
+.tr-face-name {
+  font-family: var(--font-display);
+  font-size: max(1.15em, 9px);
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.tr-glyph .bg {
+  fill: var(--card-face);
+}
+
+.tr-glyph .ink {
+  fill: currentColor;
+  stroke: none;
+}
+
+.tr-glyph .accent {
+  stroke: var(--tim);
+}
+
+/* Nhãn lá trong phần diễn giải */
+.tr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--card-face);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.tr-chip.is-interactive {
+  cursor: pointer;
+}
+
+.tr-chip.is-interactive:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  --card-face: var(--accent-soft);
+}
+
+.tr-chip-glyph {
+  width: 22px;
+  height: 22px;
+}
+
+.tr-chip-glyph.is-reversed {
+  transform: rotate(180deg);
+}
+
+.tr-chip-rev {
+  padding: 0 5px;
+  border-radius: 3px;
+  background: var(--accent-soft);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+/* =========================================================
+   Chuẩn bị
+   ========================================================= */
+
+.tr-setup {
+  display: grid;
+  gap: 32px;
+  max-width: 920px;
+  padding: 32px 0 64px;
+}
+
+.tr-setup .field {
+  max-width: 640px;
+}
+
+.tr-hint {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.tr-fieldset {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tr-fieldset > legend {
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.tr-spread-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  gap: 12px;
+}
+
+.tr-spread-option {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-content: start;
+  gap: 4px 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.tr-spread-option:hover {
+  border-color: var(--accent-line);
+}
+
+.tr-spread-option:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tr-spread-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tr-diagram {
+  grid-column: 1 / -1;
+  justify-self: start;
+  height: 40px;
+  width: auto;
+  max-width: 100%;
+  margin-bottom: 10px;
+  fill: transparent;
+  stroke: var(--accent-line);
+  stroke-width: 0.7;
+}
+
+.tr-spread-option:has(input:checked) .tr-diagram {
+  fill: var(--accent);
+  stroke: var(--surface);
+}
+
+.tr-spread-name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.2;
+}
+
+.tr-spread-count {
+  align-self: baseline;
+  font-size: var(--step--1);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.tr-spread-summary {
+  grid-column: 1 / -1;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+
+.tr-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 560px;
+  cursor: pointer;
+}
+
+.tr-toggle input {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+}
+
+.tr-toggle > span {
+  display: grid;
+  gap: 2px;
+  font-weight: 500;
+}
+
+.tr-deal {
+  min-width: 240px;
+}
+
+/* =========================================================
+   Bàn trải bài
+   ========================================================= */
+
+.tr-table-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px 24px;
+  padding-top: 28px;
+}
+
+.tr-table-spread {
+  font-size: var(--step--1);
+  color: var(--accent);
+}
+
+.tr-table-question {
+  max-width: 36ch;
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.3;
+}
+
+.tr-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tr-board-wrap {
+  padding: 36px 0 40px;
+}
+
+.tr-board-scroll {
+  overflow-x: auto;
+  padding: 8px 4px 16px;
+}
+
+.tr-board {
+  --slot-w: clamp(90px, 26vw, 130px);
+  display: grid;
+  gap: 22px 16px;
+  justify-content: center;
+  width: max-content;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.tr-board .tr-card {
+  --w: var(--slot-w);
+}
+
+.tr-board[data-spread='one'] {
+  --slot-w: clamp(150px, 42vw, 190px);
+}
+
+.tr-board[data-spread='love'],
+.tr-board[data-spread='choice'] {
+  --slot-w: clamp(84px, 24vw, 112px);
+  column-gap: 8px;
+}
+
+.tr-board[data-spread='celtic'] {
+  --slot-w: clamp(54px, 14vw, 96px);
+  grid-template-rows: repeat(8, calc((var(--slot-w) * 12 / 7 + 30px) / 2));
+  column-gap: calc(var(--slot-w) * 0.42 + 8px);
+  row-gap: 0;
+}
+
+.tr-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: tr-deal 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.tr-slot.is-crossing {
+  z-index: 2;
+}
+
+.tr-slot.is-crossing .tr-card {
+  transform: rotate(90deg);
+}
+
+.tr-slot.is-crossing .tr-card.is-interactive:hover {
+  transform: rotate(90deg) translateX(-4px);
+}
+
+.tr-slot.is-crossing .tr-slot-label {
+  visibility: hidden;
+}
+
+.tr-slot-label {
+  max-width: calc(var(--slot-w) + 16px);
+  font-size: var(--step--1);
+  line-height: 1.3;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.tr-slot-n {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.tr-board[data-spread='celtic'] .tr-slot-label {
+  max-width: var(--slot-w);
+  font-size: 0.6875rem;
+}
+
+@media (max-width: 480px) {
+  .tr-board[data-spread='celtic'] {
+    column-gap: calc(var(--slot-w) * 0.42 + 4px);
+  }
+
+  .tr-board[data-spread='celtic'] .tr-slot-label {
+    font-size: 0.625rem;
+  }
+}
+
+@keyframes tr-deal {
+  from {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tr-board-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.tr-shuffle {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  padding: 56px 0 72px;
+}
+
+.tr-deck {
+  position: relative;
+  width: 110px;
+  aspect-ratio: 7 / 12;
+}
+
+.tr-deck-card {
+  position: absolute;
+  inset: 0;
+}
+
+.tr-deck-card-0,
+.tr-deck-card-2,
+.tr-deck-card-4 {
+  animation: tr-riffle-left 0.55s ease-in-out 2 both;
+}
+
+.tr-deck-card-1,
+.tr-deck-card-3 {
+  animation: tr-riffle-right 0.55s ease-in-out 2 both;
+}
+
+.tr-deck-card-2 {
+  animation-delay: 0.08s;
+}
+.tr-deck-card-3 {
+  animation-delay: 0.12s;
+}
+.tr-deck-card-4 {
+  animation-delay: 0.16s;
+}
+
+@keyframes tr-riffle-left {
+  50% {
+    transform: translateX(-52px) rotate(-9deg);
+  }
+}
+
+@keyframes tr-riffle-right {
+  50% {
+    transform: translateX(52px) rotate(9deg);
+  }
+}
+
+/* =========================================================
+   Diễn giải
+   ========================================================= */
+
+.tr-reading-wrap {
+  display: grid;
+  gap: 28px;
+  padding: 40px 0 72px;
+  border-top: 1px solid var(--line);
+}
+
+.tr-reading-wrap > h2 {
+  font-size: var(--step-4);
+}
+
+.tr-reading {
+  display: grid;
+  gap: 40px;
+  max-width: 760px;
+}
+
+.tr-reading h3 {
+  margin-bottom: 14px;
+  font-size: var(--step-2);
+}
+
+.tr-overview {
+  display: grid;
+  gap: 10px;
+}
+
+.tr-overview p,
+.tr-section li p {
+  max-width: 64ch;
+}
+
+.tr-section-intro {
+  margin: -6px 0 16px;
+  color: var(--text-dim);
+}
+
+.tr-section ul {
+  display: grid;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tr-section li {
+  display: grid;
+  gap: 8px;
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+}
+
+.tr-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.tr-item-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.tr-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tr-verdict {
+  display: grid;
+  gap: 6px;
+  padding: 24px 28px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-m);
+  color: var(--text);
+}
+
+.tr-verdict p:not(.tr-verdict-label) {
+  color: var(--text);
+}
+
+.tr-verdict-label {
+  font-family: var(--font-display);
+  font-size: var(--step-5);
+  line-height: 1;
+}
+
+.tr-verdict[data-tone='yes'],
+.tr-verdict[data-tone='lean-yes'] {
+  color: var(--positive);
+}
+
+.tr-verdict[data-tone='no'],
+.tr-verdict[data-tone='lean-no'] {
+  color: var(--negative);
+}
+
+.tr-advice {
+  padding: 26px 30px;
+}
+
+.tr-advice h3 {
+  margin-bottom: 6px;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.tr-advice-text {
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.3;
+}
+
+.tr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+/* =========================================================
+   Chi tiết lá
+   ========================================================= */
+
+.tr-detail {
+  display: grid;
+  gap: 32px;
+}
+
+.tr-detail-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 28px;
+}
+
+.tr-detail-kind {
+  font-size: var(--step--1);
+  color: var(--accent);
+}
+
+.tr-detail-head h2 {
+  margin-top: 2px;
+  font-size: var(--step-4);
+}
+
+.tr-detail-en {
+  margin-bottom: 18px;
+  color: var(--text-faint);
+}
+
+.tr-facts {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  max-width: 460px;
+}
+
+.tr-facts dt {
+  font-size: var(--step--1);
+  color: var(--text-faint);
+}
+
+.tr-facts dd {
+  margin: 0;
+}
+
+.tr-facts dd[data-yes='1'] {
+  color: var(--positive);
+}
+
+.tr-facts dd[data-yes='-1'] {
+  color: var(--negative);
+}
+
+.tr-detail-block {
+  display: grid;
+  gap: 10px;
+}
+
+.tr-detail-block h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--step-2);
+}
+
+.tr-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--on-accent);
+}
+
+.tr-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tr-keywords li {
+  padding: 2px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+
+.tr-meanings {
+  margin: 0;
+}
+
+.tr-meanings > div {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.tr-meanings dt {
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.tr-meanings dd {
+  margin: 0;
+  max-width: 62ch;
+}
+
+@media (max-width: 600px) {
+  .tr-detail-head {
+    grid-template-columns: 1fr;
+  }
+
+  .tr-card--lg {
+    --w: 140px;
+  }
+
+  .tr-meanings > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* =========================================================
+   Tra cứu
+   ========================================================= */
+
+.tr-lookup {
+  display: grid;
+  gap: 20px;
+  padding: 28px 0 72px;
+}
+
+.tr-filters {
+  display: grid;
+  gap: 16px;
+}
+
+.tr-search {
+  max-width: 420px;
+}
+
+.tr-result-count {
+  font-size: var(--step--1);
+}
+
+.tr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 28px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tr-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--step--1);
+  line-height: 1.35;
+  color: var(--text-dim);
+  text-align: center;
+  text-decoration: none;
+}
+
+.tr-grid-item .tr-card {
+  --w: 100px;
+  transition: transform 0.2s ease;
+}
+
+.tr-grid-item:hover {
+  color: var(--text);
+}
+
+.tr-grid-item:hover .tr-card {
+  transform: translateY(-4px);
+}
+
+.tr-empty {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 32px 0;
+}
+
+.tr-lookup-detail {
+  padding-bottom: 72px;
+}
+
+.tr-detail-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding: 24px 0 28px;
+}
+
+.tr-detail-step {
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 480px) {
+  .tr-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 10px;
+  }
+
+  .tr-grid-item .tr-card {
+    --w: min(100px, calc((100vw - 52px) / 3));
+  }
+}
