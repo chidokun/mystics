@@ -4,7 +4,18 @@ import { ChartGrid } from '../components/ChartGrid';
 import { NumberDetail } from '../components/NumberDetail';
 import { Numeral } from '../components/Numeral';
 import { DIGITS, digitMeaning, getArrow } from '../data/chart';
-import { getChallenge, getPersonalYear } from '../data/cycles';
+import {
+  CYCLE_ENERGY,
+  energyLabel,
+  getChallenge,
+  getPersonalMonth,
+  getPersonalYear,
+  getWorldYear,
+  SHIFT_MONTH,
+  worldRelation,
+} from '../data/cycles';
+import { EnergyChart, type EnergyPoint } from '../components/EnergyChart';
+import { PinnaclePyramid } from '../components/PinnaclePyramid';
 import { INDICATORS } from '../data/indicators';
 import { getNumber } from '../data/numbers';
 import {
@@ -12,6 +23,10 @@ import {
   findArrows,
   isValidDate,
   nameWords,
+  peakBase,
+  personalMonth,
+  personalYear,
+  worldYear,
   type ArrowLine,
   type DigitCounts,
   type NumerologyProfile,
@@ -345,41 +360,161 @@ function ChartSection({ profile }: { profile: NumerologyProfile }) {
 
 function YearSection({ profile }: { profile: NumerologyProfile }) {
   const now = new Date();
-  const year = now.getFullYear();
-  const py = getPersonalYear(profile.personalYear);
-  const pm = getPersonalYear(profile.personalMonth);
-  const cycleStart = year - (profile.personalYear - 1);
+  const thisYear = now.getFullYear();
+  const thisMonth = now.getMonth() + 1;
+  const [selected, setSelected] = useState(thisYear);
+
+  const yearPoints: EnergyPoint[] = Array.from({ length: 12 }, (_, i) => {
+    const year = thisYear - 3 + i;
+    const n = personalYear(profile.date, year);
+    const w = worldYear(year);
+    const next = personalYear(profile.date, year + 1);
+    return {
+      key: year,
+      tick: String(year),
+      short: `’${String(year).slice(2)}`,
+      name: `Năm ${year}`,
+      number: n,
+      title: getPersonalYear(n).title,
+      value: CYCLE_ENERGY[n],
+      world: { number: w, title: getWorldYear(w).title, value: CYCLE_ENERGY[w] },
+      shift: { short: `1/${SHIFT_MONTH[next]}`, long: `1/${SHIFT_MONTH[next]}/${year}, sang số ${next}` },
+    };
+  });
+
+  const selN = personalYear(profile.date, selected);
+  const sel = getPersonalYear(selN);
+  const cycleStart = selected - (selN - 1);
+  const nextN = personalYear(profile.date, selected + 1);
+  const shiftIn = SHIFT_MONTH[selN];
+  const shiftOut = SHIFT_MONTH[nextN];
+  const selW = worldYear(selected);
+  const world = getWorldYear(selW);
+  const sameWorldYears = [-9, 0, 9].map((d) => selected + d);
+
+  const months = Array.from({ length: 12 }, (_, i) => {
+    const month = i + 1;
+    const n = personalMonth(profile.date, selected, month);
+    return { month, n, meaning: getPersonalMonth(n) };
+  });
+  const monthPoints: EnergyPoint[] = months.map(({ month, n, meaning }) => ({
+    key: month,
+    tick: `T${month}`,
+    name: `Tháng ${month}/${selected}`,
+    number: n,
+    title: meaning.title,
+    value: CYCLE_ENERGY[n],
+  }));
+  const isThisYear = selected === thisYear;
+  const shifted = isThisYear && thisMonth >= shiftOut;
 
   return (
     <section className="nm-section" aria-labelledby="nm-year-title">
-      <h2 id="nm-year-title">Năm cá nhân</h2>
-      <ol className="nm-cycle" aria-label="Chu kỳ 9 năm hiện tại">
+      <h2 id="nm-year-title">Năm cá nhân và năm thế giới</h2>
+      <p className="muted nm-section-intro">
+        Mỗi năm mang một con số từ 1 đến 9, lặp lại theo chu kỳ chín năm. Năm cá nhân là nhịp riêng của bạn; năm thế giới là nhịp chung
+        của mọi người. Năm năng lượng cao thuận để hành động và mở rộng; năm thấp nên chậm lại, vun đắp bên trong.
+      </p>
+
+      <h3 className="nm-chart-title">Đường cong năng lượng, {yearPoints[0].key}–{yearPoints[yearPoints.length - 1].key}</h3>
+      <EnergyChart
+        points={yearPoints}
+        selectedKey={selected}
+        currentKey={thisYear}
+        onSelect={setSelected}
+        label={`Mức năng lượng năm cá nhân và năm thế giới từ ${yearPoints[0].key} đến ${yearPoints[yearPoints.length - 1].key}`}
+        unit="Năm"
+      />
+
+      <ol className="nm-cycle" aria-label={`Chu kỳ 9 năm chứa năm ${selected}`}>
         {Array.from({ length: 9 }, (_, i) => {
           const y = cycleStart + i;
-          const isNow = y === year;
+          const w = worldYear(y);
+          const cls = [y === thisYear && 'is-now', y === selected && 'is-selected', y < thisYear && 'is-past'].filter(Boolean).join(' ');
           return (
-            <li key={y} className={isNow ? 'is-now' : y < year ? 'is-past' : undefined} aria-current={isNow ? 'step' : undefined}>
-              <span className="nm-cycle-n">{i + 1}</span>
-              <span className="nm-cycle-year">{y}</span>
+            <li key={y} className={cls || undefined} aria-current={y === thisYear ? 'step' : undefined}>
+              <button
+                type="button"
+                onClick={() => setSelected(y)}
+                aria-pressed={y === selected}
+                aria-label={`Năm ${y}: năm cá nhân ${i + 1}, năm thế giới ${w}`}
+              >
+                <span className="nm-cycle-n">{i + 1}</span>
+                <span className="nm-cycle-year">{y}</span>
+                <span className="nm-cycle-world">{w}</span>
+              </button>
             </li>
           );
         })}
       </ol>
-      <div className="nm-year-body">
-        <div>
+      <p className="nm-cycle-key">
+        <span>Số lớn: năm cá nhân</span>
+        <span className="nm-cycle-key-world">Số đỏ: năm thế giới</span>
+      </p>
+
+      <div className="nm-year-grid">
+        <div className="nm-year-detail">
           <h3>
-            Năm {year}: năm cá nhân số {profile.personalYear}, {py.title.toLowerCase()}
+            Năm {selected}: năm cá nhân số {selN}, {sel.title.toLowerCase()}
           </h3>
-          <p>{py.text}</p>
-          <p className="nm-focus">Nên tập trung: {py.focus}</p>
+          <p>{sel.text}</p>
+          <p className="nm-focus">
+            Nên tập trung: {sel.focus} Mức năng lượng {energyLabel(CYCLE_ENERGY[selN])} ({CYCLE_ENERGY[selN]}/10).
+          </p>
+          <p className="nm-shift">
+            Năng lượng năm số {selN} bắt đầu từ 1/{shiftIn}/{selected - 1}. Từ 1/{shiftOut}/{selected}, năng lượng năm số {nextN} bắt đầu
+            thay thế{shifted ? ', nên lúc này bạn đã bước vào giai đoạn chuyển giao' : ''}.
+          </p>
         </div>
-        <div>
+
+        <div className="nm-world">
           <h3>
-            Tháng {now.getMonth() + 1}: tháng cá nhân số {profile.personalMonth}
+            Năm thế giới {selected}: số {selW}, {world.title.toLowerCase()}
           </h3>
-          <p>{pm.focus}</p>
+          <p>{world.text}</p>
+          <p className="nm-focus">Lời khuyên chung: {world.advice}</p>
+          <p className="nm-world-relation">
+            <strong>
+              Bạn trong năm thế giới {selW} (năm cá nhân {selN}):
+            </strong>{' '}
+            {worldRelation(selN, selW)}
+          </p>
+          <p className="muted nm-world-same">
+            Năm thế giới số {selW} lặp lại vào các năm {sameWorldYears.join(', ')}.
+          </p>
         </div>
       </div>
+
+      <h3 className="nm-chart-title">Dự đoán từng tháng năm {selected}</h3>
+      <EnergyChart
+        points={monthPoints}
+        currentKey={isThisYear ? thisMonth : undefined}
+        label={`Mức năng lượng 12 tháng cá nhân năm ${selected}`}
+        unit="Tháng"
+        height={210}
+      />
+      <ol className="nm-months">
+        {months.map(({ month, n, meaning }) => {
+          const isNow = isThisYear && month === thisMonth;
+          return (
+            <li key={month} className={isNow ? 'is-now' : undefined} aria-current={isNow ? 'step' : undefined}>
+              <span className="nm-month-head">
+                <span className="nm-month-name">Tháng {month}</span>
+                <span className="nm-month-n" aria-label={`tháng cá nhân số ${n}`}>
+                  {n}
+                </span>
+              </span>
+              <span className="nm-month-title">{meaning.title}</span>
+              <span className="nm-month-text">{meaning.text}</span>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="muted nm-note">
+        Năm cá nhân tính theo năm dương lịch: ngày sinh + tháng sinh + năm đang xét. Năm thế giới chỉ cộng các chữ số của năm (2026 →
+        2+0+2+6 = 10 → 1). Tháng cá nhân bằng năm cá nhân cộng số tháng, rút gọn về 1–9. Mức năng lượng theo đường cong chín năm phổ
+        biến: cao nhất ở chỗ chuyển từ năm 9 sang năm 1, thấp nhất ở năm 7; năng lượng năm mới bắt đầu ngấm từ vài tháng trước 1/1.
+      </p>
     </section>
   );
 }
@@ -396,6 +531,13 @@ function PeakSection({ profile, onOpen }: { profile: NumerologyProfile; onOpen: 
           ? `Bạn ${profile.age} tuổi, đang trên đường tới đỉnh thứ nhất.`
           : `Bạn ${profile.age} tuổi, đang ở giai đoạn của đỉnh thứ ${currentIndex + 1}.`}
       </p>
+      <figure className="nm-pyramid-figure">
+        <PinnaclePyramid base={peakBase(profile.date)} peaks={profile.peaks} currentIndex={currentIndex} />
+        <figcaption>
+          <span className="nm-key nm-key--peak" aria-hidden="true" /> Phía trên: bốn đỉnh cao, mỗi đỉnh là tổng hai số bên dưới nó.{' '}
+          <span className="nm-key nm-key--challenge" aria-hidden="true" /> Phía dưới: bốn thử thách, là hiệu của hai số bên trên nó.
+        </figcaption>
+      </figure>
       <ol className="nm-peaks">
         {profile.peaks.map((p, i) => {
           const challenge = getChallenge(p.challenge);

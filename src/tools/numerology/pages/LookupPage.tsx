@@ -4,10 +4,10 @@ import { ChartGrid } from '../components/ChartGrid';
 import { NumberDetail } from '../components/NumberDetail';
 import { Numeral } from '../components/Numeral';
 import { ARROWS, DIGITS } from '../data/chart';
-import { CHALLENGES, PERSONAL_YEARS } from '../data/cycles';
+import { CHALLENGES, CYCLE_ENERGY, energyLabel, PERSONAL_MONTHS, PERSONAL_YEARS, SHIFT_MONTH, WORLD_YEARS } from '../data/cycles';
 import { INDICATORS } from '../data/indicators';
 import { NUMBERS } from '../data/numbers';
-import { letterValue } from '../lib/calc';
+import { letterValue, worldYear } from '../lib/calc';
 import { LOOKUP_PATH } from '../paths';
 import '../numerology.css';
 
@@ -146,6 +146,7 @@ function ChartView() {
 }
 
 function CycleView() {
+  const thisYear = new Date().getFullYear();
   return (
     <div className="nm-ref">
       <section className="nm-section">
@@ -160,7 +161,58 @@ function CycleView() {
               <div>
                 <h3>{y.title}</h3>
                 <p>{y.text}</p>
-                <p className="nm-focus">Nên tập trung: {y.focus}</p>
+                <p className="nm-focus">
+                  Nên tập trung: {y.focus} Mức năng lượng {energyLabel(CYCLE_ENERGY[y.n])} ({CYCLE_ENERGY[y.n]}/10), bắt đầu ngấm từ
+                  1/{SHIFT_MONTH[y.n]} của năm trước.
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className="muted nm-note">
+          Mức năng lượng theo đường cong chín năm phổ biến trong thần số học Việt Nam: cao nhất ở chỗ chuyển từ năm 9 sang năm 1, đổ dốc
+          qua năm 2, 3, xuống thấp ở năm 4, 5, nhô nhẹ ở năm 6, chạm đáy ở năm 7 rồi leo lại ở năm 8, 9. Năng lượng năm mới không đợi tới 1/1 mà bắt đầu
+          ngấm từ tháng 8 đến tháng 11 của năm trước, tùy con số.
+        </p>
+      </section>
+      <section className="nm-section">
+        <h2>Năm thế giới</h2>
+        <p className="muted nm-section-intro">
+          Nhịp chung của mọi người, tính từ riêng năm dương lịch: cộng các chữ số của năm, rút gọn về 1–9. Năm {thisYear} là năm thế giới
+          số {worldYear(thisYear)}.
+        </p>
+        <ol className="nm-ref-years">
+          {WORLD_YEARS.map((w) => {
+            // Năm gần nhất (trong khoảng ±4 năm) mang số này, cùng hai lần lặp liền kề
+            const ahead = (w.n - worldYear(thisYear) + 9) % 9;
+            const near = thisYear + (ahead > 4 ? ahead - 9 : ahead);
+            const years = [near - 9, near, near + 9];
+            return (
+              <li key={w.n}>
+                <Numeral n={w.n} size="sm" />
+                <div>
+                  <h3>{w.title}</h3>
+                  <p>{w.text}</p>
+                  <p className="nm-focus">Lời khuyên chung: {w.advice}</p>
+                  <p className="muted nm-world-same">Các năm: {years.join(', ')}.</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+      <section className="nm-section">
+        <h2>Tháng cá nhân</h2>
+        <p className="muted nm-section-intro">
+          Nhịp nhỏ bên trong mỗi năm. Tháng cá nhân = năm cá nhân + số tháng dương lịch, rút gọn về 1–9.
+        </p>
+        <ol className="nm-ref-years">
+          {PERSONAL_MONTHS.map((m) => (
+            <li key={m.n}>
+              <Numeral n={m.n} size="sm" />
+              <div>
+                <h3>{m.title}</h3>
+                <p>{m.text}</p>
               </div>
             </li>
           ))}

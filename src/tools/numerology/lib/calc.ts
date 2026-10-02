@@ -139,6 +139,9 @@ export function personalYear(date: BirthDate, year: number): number {
   return reduceFully(digitSum(date.day) + digitSum(date.month) + digitSum(year));
 }
 
+/** Năm thế giới: cộng các chữ số của năm dương lịch, rút gọn về 1–9 */
+export const worldYear = (year: number): number => reduceFully(digitSum(year));
+
 export function personalMonth(date: BirthDate, year: number, month: number): number {
   return reduceFully(personalYear(date, year) + month);
 }
@@ -162,12 +165,15 @@ export interface Peak {
  * Bốn đỉnh cao và thử thách. Đỉnh 1 đến ở tuổi 36 trừ số chủ đạo (rút về 1 chữ số),
  * các đỉnh sau cách nhau 9 năm.
  */
+/** Ba số gốc của bốn đỉnh cao và thử thách: ngày, tháng, năm sinh đã rút gọn */
+export function peakBase(date: BirthDate) {
+  return { day: reduceFully(date.day), month: reduceFully(date.month), year: reduceFully(digitSum(date.year)) };
+}
+
 export function peaks(date: BirthDate): Peak[] {
   const lp = reduceFully(lifePath(date));
   const firstAge = 36 - lp;
-  const d = reduceFully(date.day);
-  const m = reduceFully(date.month);
-  const y = reduceFully(digitSum(date.year));
+  const { day: d, month: m, year: y } = peakBase(date);
   const keep = [11, 22];
 
   const p1 = reduce(d + m, keep);

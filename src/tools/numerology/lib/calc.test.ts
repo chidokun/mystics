@@ -8,10 +8,13 @@ import {
   letterValue,
   lifePath,
   nameNumbers,
+  peakBase,
+  personalMonth,
   nameWords,
   peaks,
   personalYear,
   reduce,
+  worldYear,
 } from './calc';
 
 describe('reduce', () => {
@@ -77,6 +80,17 @@ describe('biểu đồ ngày sinh', () => {
 describe('chu kỳ', () => {
   it('năm cá nhân', () => {
     expect(personalYear({ day: 15, month: 8, year: 1996 }, 2026)).toBe(6); // 1+5+8+2+0+2+6 = 24
+  });
+  it('năm thế giới', () => {
+    expect([2017, 2020, 2024, 2025, 2026, 2027].map(worldYear)).toEqual([1, 4, 8, 9, 1, 2]);
+  });
+  it('tháng cá nhân trong năm', () => {
+    const date = { day: 15, month: 8, year: 1996 };
+    // Năm cá nhân 2026 là 6: tháng 1 → 7, tháng 3 → 9, tháng 4 → 1
+    expect([1, 3, 4, 12].map((m) => personalMonth(date, 2026, m))).toEqual([7, 9, 1, 9]);
+  });
+  it('số gốc của kim tự tháp đỉnh cao', () => {
+    expect(peakBase({ day: 15, month: 8, year: 1996 })).toEqual({ day: 6, month: 8, year: 7 });
   });
   it('bốn đỉnh và thử thách', () => {
     const p = peaks({ day: 15, month: 8, year: 1996 });
